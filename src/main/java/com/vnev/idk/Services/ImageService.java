@@ -12,9 +12,8 @@ import java.util.List;
 
 public interface ImageService {
     List<Image> findAll();
-    Image save(Image image);
+    Image save(Image image) throws IOException;
     Image addTag(int imageId, Tag tag);
-    Image addImage(MultipartFile file, int imageid) throws IOException;
     Image getImage(int imageId);
     Image updateImage(Image image);
     void deleteImage(Image image);

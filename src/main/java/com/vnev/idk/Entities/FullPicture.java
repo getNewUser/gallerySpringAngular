@@ -21,6 +21,13 @@ public class FullPicture {
     @JoinColumn(name = "fullpicture_id", referencedColumnName = "image_id")
     private Image image;
 
+    public FullPicture(int id, byte[] picture) {
+        this.id = id;
+        this.picture = picture;
+    }
+
+    public FullPicture() {
+    }
 
     public int getId() {
         return id;

@@ -174,8 +174,6 @@ public class ImageDAOImpl implements ImageDAO {
         Predicate predicate = builder.or(template1,template2);
 
 
-
-
         if(!categoriesIds.isEmpty()){
             Predicate categoriesPredicate = (builder.equal(categories.get("id"), -1)); // just to initialize it to be able to pass it
             categoriesPredicate = getCategoriesPredicate(categoriesIds,builder,categoriesPredicate, categories);
@@ -210,11 +208,17 @@ public class ImageDAOImpl implements ImageDAO {
 
     @Transactional
     @Override
-    public Image save(Image image) {
+    public Image save(Image image, FullPicture fullPicture) {
         Session session = entityManager.unwrap(Session.class);
         image.setDate(new Date());
-
         session.save(image);
+        Query query = session.createQuery("from Image order by image_id DESC ");
+        query.setMaxResults(1);
+        image = (Image) query.uniqueResult();
+        fullPicture.setId(image.getId());
+        image.setFullPicture(fullPicture);
+
+        session.update(image);
 
         return image;
     }
@@ -300,24 +304,7 @@ public class ImageDAOImpl implements ImageDAO {
         return image;
     }
 
-    @Transactional
-    @Override
-    public void setImage(int imageId, byte[] arr) throws IOException {
-        Session session = entityManager.unwrap(Session.class);
-        Image image = session.get(Image.class, imageId);
 
-
-        InputStream in = new ByteArrayInputStream(arr);
-
-        BufferedImage buf = ImageIO.read(in);
-        int height = buf.getHeight();
-        int width = buf.getWidth();
-
-//        image.setPicture(arr);
-        image.setHeight(height);
-        image.setWidth(width);
-        session.saveOrUpdate(image);
-    }
 
 
 }
