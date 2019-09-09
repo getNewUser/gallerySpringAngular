@@ -2,8 +2,6 @@ package com.vnev.idk.Entities;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -13,7 +11,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "image")
-//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class)
 public class Image {
 
     @Id

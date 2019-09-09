@@ -7,7 +7,6 @@ import com.vnev.idk.Entities.Tag;
 import com.vnev.idk.Services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,26 +47,6 @@ public class ImageController {
         return imageService.save(image);
     }
 
-    @PostMapping("/addtagtoimage/{id}")
-    public Tag addTagToImage(@PathVariable int id, @RequestBody Tag tag){
-        imageService.addTag(id, tag);
-
-        return tag;
-    }
-
-    @PostMapping("/addcategorytoimage/{id}")
-    public Category addCategoryToImage(@PathVariable int id, @RequestBody Category category){
-        imageService.addCategory(id, category);
-
-        return category;
-    }
-
-//    @PostMapping("/addImage")
-//    public void createNewObjectWithImage(@RequestParam("model") String model, @RequestParam(value = "file", required = false) MultipartFile file){
-//        ObjectMapper mapper = new ObjectMapper();
-//        ImageDTO image = mapper.readValues(model, ImageDTO.class);
-//    }
-
     @GetMapping("/{id}")
     public Image getPicture(@PathVariable int id){
         return imageService.getImage(id);
@@ -75,11 +54,6 @@ public class ImageController {
 
 
 
-//    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/delete/")
-    public void deleteImage(@RequestBody Image image){
-        imageService.deleteImage(image);
-    }
 
 //    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")

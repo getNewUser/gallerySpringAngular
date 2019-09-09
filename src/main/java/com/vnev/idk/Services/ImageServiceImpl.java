@@ -1,6 +1,5 @@
 package com.vnev.idk.Services;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.vnev.idk.DAO.Image.ImageDAO;
 import com.vnev.idk.Entities.Category;
 import com.vnev.idk.Entities.FullPicture;
@@ -9,7 +8,6 @@ import com.vnev.idk.Entities.Tag;
 import com.vnev.idk.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
