@@ -98,7 +98,9 @@ public class Image {
 
 
 
-    @OneToOne(mappedBy = "image", cascade = CascadeType.ALL)
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", referencedColumnName = "fullpicture_id")
     @JsonBackReference
     private FullPicture fullPicture;
 

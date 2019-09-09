@@ -1,21 +1,15 @@
 package com.vnev.idk.Controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vnev.idk.DAO.Image.ImageDAO;
-import com.vnev.idk.DAO.Image.ImageDTO;
 import com.vnev.idk.Entities.Category;
 import com.vnev.idk.Entities.FullPicture;
 import com.vnev.idk.Entities.Image;
 import com.vnev.idk.Entities.Tag;
-import com.vnev.idk.ImageUtils;
 import com.vnev.idk.Services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.plugin.javascript.navig.Link;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -50,7 +44,7 @@ public class ImageController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping()
-    public Image image(@RequestBody Image image){
+    public Image image(@RequestBody Image image) throws IOException {
         return imageService.save(image);
     }
 
@@ -66,11 +60,6 @@ public class ImageController {
         imageService.addCategory(id, category);
 
         return category;
-    }
-
-    @PostMapping("/setimage/image/{id}")
-    public Image addPicture(@PathVariable int id, @RequestParam("file") MultipartFile file) throws IOException {
-        return imageService.addImage(file,id);
     }
 
 //    @PostMapping("/addImage")

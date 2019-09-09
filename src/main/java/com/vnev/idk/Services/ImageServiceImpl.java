@@ -11,11 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Service
-public class ImageServiceImpl implements  ImageService {
+public class ImageServiceImpl implements ImageService {
 
     private ImageDAO imageDao;
 
@@ -27,7 +31,7 @@ public class ImageServiceImpl implements  ImageService {
 
     @Override
     public List<Image> findAll() {
-       return imageDao.findAll();
+        return imageDao.findAll();
     }
 
 
@@ -38,29 +42,25 @@ public class ImageServiceImpl implements  ImageService {
 
 
     @Override
-    public Image save(Image image) {
-        if(image.getFullPicture() != null){
-            image.setThumbnail(ImageUtils.scale(image.getThumbnail(), 300, 300));
-            image.getFullPicture().setId(image.getId());
-            return imageDao.save(image);
-        }
-        return imageDao.save(image);
+    public Image save(Image image) throws IOException {
+        FullPicture fullPicture = new FullPicture();// I receive full image size from angular in Thumbnail and assign it to FullPicture object
+        fullPicture.setPicture(image.getThumbnail());
+
+        InputStream in = new ByteArrayInputStream(image.getThumbnail());
+
+        BufferedImage buf = ImageIO.read(in);
+        int height = buf.getHeight();
+        int width = buf.getWidth();
+
+        image.setHeight(height);
+        image.setWidth(width);
+
+
+        image.setThumbnail(ImageUtils.scale(image.getThumbnail(), 300, 300)); // and then resize it for thumbnail
+        return imageDao.save(image, fullPicture);
     }
 
-    @Override
-    public Image addImage(MultipartFile file, int imageid) throws IOException {
-        byte[] fullImage = file.getBytes();
-        FullPicture fullPicture = new FullPicture();
-        fullPicture.setPicture(fullImage);
-        Image image = imageDao.getImage(imageid);
-        fullPicture.setId(image.getId());
-        image.setFullPicture(fullPicture);
 
-        byte[] thumbnailImage = ImageUtils.scale(file.getBytes(), 300, 300);
-        image.setThumbnail(thumbnailImage);
-
-        return imageDao.update(image);
-    }
 
     @Override
     public Image getImage(int imageId) {
@@ -71,7 +71,6 @@ public class ImageServiceImpl implements  ImageService {
     public Image updateImage(Image image) {
         return imageDao.update(image);
     }
-
 
 
     @Override
@@ -91,7 +90,7 @@ public class ImageServiceImpl implements  ImageService {
 
     @Override
     public List<Image> search(List<Integer> cats, List<Integer> tags, String search) {
-        return imageDao.findForSearch(cats,tags,search);
+        return imageDao.findForSearch(cats, tags, search);
     }
 
     @Override
