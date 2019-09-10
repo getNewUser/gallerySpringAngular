@@ -6,6 +6,7 @@ import com.vnev.idk.Entities.Image;
 import com.vnev.idk.Entities.Tag;
 import com.vnev.idk.Services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -56,13 +57,12 @@ public class ImageController {
 
 
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public void deleteImage(@PathVariable("id") int id){
         imageService.deleteImageById(id);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/update")
     public Image updateImage(@RequestBody Image image){
         return imageService.updateImage(image);
