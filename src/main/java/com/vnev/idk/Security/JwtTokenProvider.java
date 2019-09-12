@@ -27,11 +27,16 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(userPrincipal.getId() + ",");
+//        System.out.println(userPrincipal.getAuthorities());
+
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
+                .claim("scopes", userPrincipal.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
 
