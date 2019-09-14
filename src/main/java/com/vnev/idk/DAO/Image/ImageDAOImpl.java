@@ -15,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class ImageDAOImpl implements ImageDAO {
@@ -201,21 +199,9 @@ public class ImageDAOImpl implements ImageDAO {
 
 
     @Transactional
-    @Override
-    public Image save(Image image, FullPicture fullPicture) {
-        Session session = entityManager.unwrap(Session.class);
-        image.setDate(new Date());
-        session.save(image);
-        Query query = session.createQuery("from Image order by image_id DESC ");
-        query.setMaxResults(1);
-        image = (Image) query.uniqueResult();
-        fullPicture.setId(image.getId());
-        image.setFullPicture(fullPicture);
 
-        session.update(image);
 
-        return image;
-    }
+
     private List<Tag> findAllTags(String name) {
         Session session = entityManager.unwrap(Session.class);
 
@@ -227,6 +213,18 @@ public class ImageDAOImpl implements ImageDAO {
 
 
         return tags;
+    }
+
+    private Set<Tag> filterNewTags (Set<Tag> tags){
+        Set<Tag> filteredList = new HashSet<>();
+        for(Tag tag : tags){
+            if(findAllTags(tag.getName()).isEmpty()){
+                tag.setCreatedDate(new Date());
+                filteredList.add(tag);
+            }
+        }
+
+        return filteredList;
     }
 
     @Transactional
@@ -247,6 +245,39 @@ public class ImageDAOImpl implements ImageDAO {
             session.save(tag);
             session.update(image);
         }
+
+        return image;
+    }
+
+    @Override
+    public Image save(Image image, FullPicture fullPicture) {
+        Session session = entityManager.unwrap(Session.class);
+        image.setDate(new Date());
+
+
+        Set<Tag> filteredNewTagsList = filterNewTags(image.getTags());
+        if(!filteredNewTagsList.isEmpty()){
+            for(Tag tag: filteredNewTagsList){
+                image.getTags().add(tag);
+                session.save(tag);
+                session.update(image);
+            }
+        }
+
+        for(Tag tag : image.getTags()){
+            image.getTags().add(tag);
+            session.update(image);
+        }
+
+        session.save(image);
+
+        Query query = session.createQuery("from Image order by image_id DESC ");
+        query.setMaxResults(1);
+        image = (Image) query.uniqueResult();
+        fullPicture.setId(image.getId());
+        image.setFullPicture(fullPicture);
+
+        session.update(image);
 
         return image;
     }

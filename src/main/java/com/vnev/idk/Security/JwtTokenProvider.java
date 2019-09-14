@@ -29,10 +29,11 @@ public class JwtTokenProvider {
 
 //        StringBuilder sb = new StringBuilder();
 //        sb.append(userPrincipal.getId() + ",");
-//        System.out.println(userPrincipal.getAuthorities());
+//        sb.append(userPrincipal.getAuthorities());
 
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
+//                .setSubject(sb.toString())
                 .claim("scopes", userPrincipal.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
