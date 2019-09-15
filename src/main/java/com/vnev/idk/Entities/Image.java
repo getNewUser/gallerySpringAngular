@@ -71,7 +71,6 @@ public class Image {
     @ManyToMany(
             cascade = {
                     CascadeType.MERGE, CascadeType.PERSIST} // to prevent children from being deleted while removing parent
-//            CascadeType.ALL}
             )
     @JoinTable(
             name="image_tag",

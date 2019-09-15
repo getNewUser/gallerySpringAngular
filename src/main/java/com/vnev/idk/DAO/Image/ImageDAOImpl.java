@@ -27,20 +27,6 @@ public class ImageDAOImpl implements ImageDAO {
         this.entityManager = entityManager;
     }
 
-
-
-    @Transactional
-    @Override
-    public void deleteImage(Image image) {
-//        Session session = entityManager.unwrap(Session.class);
-//        session.delete(image);
-
-        image = entityManager.find(Image.class, image.getId());
-        entityManager.remove(image);
-        entityManager.flush();
-        entityManager.clear();
-    }
-
     @Transactional
     @Override
     public void deleteImageById(int id) {
@@ -237,27 +223,7 @@ public class ImageDAOImpl implements ImageDAO {
         return filteredList;
     }
 
-    @Transactional
-    @Fetch(value= FetchMode.SELECT)
-    @Override
-    public Image addTag(int imageId, Tag tag) {
-        Session session = entityManager.unwrap(Session.class);
-        Image image = session.get(Image.class, imageId);
 
-        List<Tag> tags = findAllTags(tag.getName());
-        if(!tags.isEmpty()){
-            tag = tags.get(0);
-            image.getTags().add(tag);
-            session.update(image);
-        }else {
-            tag.setCreatedDate(new Date());
-            image.getTags().add(tag);
-            session.save(tag);
-            session.update(image);
-        }
-
-        return image;
-    }
 
 
 
@@ -265,8 +231,10 @@ public class ImageDAOImpl implements ImageDAO {
     @Override
     public Image save(Image image, FullPicture fullPicture) {
         Session session = entityManager.unwrap(Session.class);
+
         Set<Tag> filteredNewTags = filterNewTags(image.getTags());
         Set<Tag> filteredExistingTags = getExistingTags(image.getTags());
+
         image.setDate(new Date());
 
 
@@ -280,6 +248,8 @@ public class ImageDAOImpl implements ImageDAO {
         image = (Image) query.uniqueResult();
         fullPicture.setId(image.getId());
         image.setFullPicture(fullPicture);
+
+
         for(Tag tag: filteredExistingTags){
             List<Tag> tags = findAllTags(tag.getName());
             if(!tags.isEmpty()) {
@@ -293,44 +263,6 @@ public class ImageDAOImpl implements ImageDAO {
         return image;
     }
 
-    private List<Category> findAllCategories(String name) {
-        Session session = entityManager.unwrap(Session.class);
-
-        Query<Category> query = session.createQuery("from Category where name=:categoryname", Category.class);
-        query.setParameter("categoryname", name);
-
-        List<Category> categories = query.getResultList();
-
-        return categories;
-    }
-    @Transactional
-    @Fetch(value= FetchMode.SELECT)
-    @Override
-    public Image addCategory(int imageId, Category category) {
-        Session session = entityManager.unwrap(Session.class);
-        Image image = session.get(Image.class, imageId);
-
-        List<Category> categories = findAllCategories(category.getName());
-
-        if(!categories.isEmpty()){
-            category = categories.get(0);
-            image.getCategories().add(category);
-            session.update(image);
-        }else {
-            image.getCategories().add(category);
-            session.save(category);
-            session.update(image);
-        }
-
-        return image;
-
-
-    }
-
-
-
-
-
     @Transactional
     @Override
     public Image getImage(int id) {
@@ -339,8 +271,4 @@ public class ImageDAOImpl implements ImageDAO {
 
         return image;
     }
-
-
-
-
 }

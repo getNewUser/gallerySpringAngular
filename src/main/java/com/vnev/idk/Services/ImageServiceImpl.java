@@ -32,13 +32,6 @@ public class ImageServiceImpl implements ImageService {
         return imageDao.findAll();
     }
 
-
-    @Override
-    public Image addTag(int imageId, Tag tag) {
-        return imageDao.addTag(imageId, tag);
-    }
-
-
     @Override
     public Image save(Image image) throws IOException {
         FullPicture fullPicture = new FullPicture();// I receive full image size from angular in Thumbnail and assign it to FullPicture object
@@ -71,20 +64,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
 
-    @Override
-    public void deleteImage(Image image) {
-        imageDao.deleteImage(image);
-    }
 
     @Override
     public void deleteImageById(int id) {
         imageDao.deleteImageById(id);
     }
 
-    @Override
-    public Image addCategory(int imageId, Category category) {
-        return imageDao.addCategory(imageId, category);
-    }
 
     @Override
     public List<Image> search(List<Integer> cats, List<Integer> tags, String search) {
