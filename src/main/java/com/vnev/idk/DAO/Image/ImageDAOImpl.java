@@ -198,8 +198,6 @@ public class ImageDAOImpl implements ImageDAO {
     }
 
 
-    @Transactional
-
 
 
     private List<Tag> findAllTags(String name) {
@@ -219,6 +217,18 @@ public class ImageDAOImpl implements ImageDAO {
         Set<Tag> filteredList = new HashSet<>();
         for(Tag tag : tags){
             if(findAllTags(tag.getName()).isEmpty()){
+                tag.setCreatedDate(new Date());
+                filteredList.add(tag);
+            }
+        }
+
+        return filteredList;
+    }
+
+    private Set<Tag> getExistingTags (Set<Tag> tags){
+        Set<Tag> filteredList = new HashSet<>();
+        for(Tag tag : tags){
+            if(!findAllTags(tag.getName()).isEmpty()){
                 tag.setCreatedDate(new Date());
                 filteredList.add(tag);
             }
@@ -249,33 +259,34 @@ public class ImageDAOImpl implements ImageDAO {
         return image;
     }
 
+
+
+    @Transactional
     @Override
     public Image save(Image image, FullPicture fullPicture) {
         Session session = entityManager.unwrap(Session.class);
+        Set<Tag> filteredNewTags = filterNewTags(image.getTags());
+        Set<Tag> filteredExistingTags = getExistingTags(image.getTags());
         image.setDate(new Date());
 
 
-        Set<Tag> filteredNewTagsList = filterNewTags(image.getTags());
-        if(!filteredNewTagsList.isEmpty()){
-            for(Tag tag: filteredNewTagsList){
-                image.getTags().add(tag);
-                session.save(tag);
-                session.update(image);
-            }
-        }
+       image.setTags(filteredNewTags);
+       session.persist(image);
 
-        for(Tag tag : image.getTags()){
-            image.getTags().add(tag);
-            session.update(image);
-        }
 
-        session.save(image);
 
         Query query = session.createQuery("from Image order by image_id DESC ");
         query.setMaxResults(1);
         image = (Image) query.uniqueResult();
         fullPicture.setId(image.getId());
         image.setFullPicture(fullPicture);
+        for(Tag tag: filteredExistingTags){
+            List<Tag> tags = findAllTags(tag.getName());
+            if(!tags.isEmpty()) {
+                tag = tags.get(0);
+                image.getTags().add(tag);
+            }
+        }
 
         session.update(image);
 
