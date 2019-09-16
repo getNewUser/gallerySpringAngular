@@ -38,8 +38,7 @@ public class Tag {
                 '}';
     }
 
-//    @ManyToMany(mappedBy = "tags")
-@ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags")
     private Set<Image> images = new HashSet<>();
 
 

@@ -22,6 +22,11 @@ public class TagController {
 
     @GetMapping()
     public List<Tag> tags(){
+        return tagService.findTagsWithParent();
+    }
+
+    @GetMapping("/allexisting")
+    public List<Tag> allExistingTags(){
         return tagService.findAll();
     }
 

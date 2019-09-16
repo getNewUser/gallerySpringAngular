@@ -42,4 +42,9 @@ public class TagServiceImpl implements  TagService {
     public Tag updateTag(Tag tag) {
        return tagDAO.updateTag(tag);
     }
+
+    @Override
+    public List<Tag> findTagsWithParent() {
+        return tagDAO.findTagsWithParent();
+    }
 }

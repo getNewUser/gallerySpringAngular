@@ -10,4 +10,5 @@ public interface TagService {
     void removeTag(Tag tag);
     void removeTagById(int id);
     Tag updateTag(Tag tag);
+    List<Tag> findTagsWithParent();
 }
