@@ -43,6 +43,21 @@ public class ImageDAOImpl implements ImageDAO {
     public Image update(Image image) {
         Session session = entityManager.unwrap(Session.class);
 
+        Set<Tag> filteredNewTags = filterNewTags(image.getTags());
+        Set<Tag> filteredExistingTags = getExistingTags(image.getTags());
+
+        image.setTags(filteredNewTags);
+        session.update(image);
+
+
+        for(Tag tag: filteredExistingTags){
+            List<Tag> tags = findAllTags(tag.getName());
+            if(!tags.isEmpty()) {
+                tag = tags.get(0);
+                image.getTags().add(tag);
+            }
+        }
+
         session.update(image);
 
         return image;
