@@ -592,7 +592,7 @@ let AuthService = class AuthService {
     login(usernameOrEmail, password) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
             return this.http
-                .post('http://localhost:8080/api/auth/signin', {
+                .post('/api/auth/signin', {
                 usernameOrEmail,
                 password
             })
@@ -610,7 +610,7 @@ let AuthService = class AuthService {
             const name = user.name;
             const password = user.password;
             return this.http
-                .post('http://localhost:8080/api/auth/signup', {
+                .post('/api/auth/signup', {
                 email,
                 username,
                 name,
@@ -716,42 +716,41 @@ let GalleryService = class GalleryService {
         this.http = http;
     }
     updateImage(image) {
-        this.http.put('http://localhost:8080/images/update', image).subscribe(data => {
+        this.http.put('/images/update', image).subscribe(data => {
             console.log('PUT Request was successful: ' + data);
         }, error => {
             console.log('error bois: ', error);
         });
     }
     addImage(image) {
-        return this.http.post('http://localhost:8080/images', image);
+        return this.http.post('/images', image);
     }
     deleteImage(imageId) {
-        console.log('http://localhost:8080/images/delete/' + imageId);
-        return this.http.delete('http://localhost:8080/images/delete/' + imageId);
+        return this.http.delete('/images/delete/' + imageId);
     }
     getPhoto(index) {
-        return this.http.get('http://localhost:8080/images/' + index);
+        return this.http.get('/images/' + index);
     }
     getFullPhoto(index) {
-        return this.http.get('http://localhost:8080/images/fullpicture?imageId=' + index);
+        return this.http.get('/images/fullpicture?imageId=' + index);
     }
     getThumbnails() {
-        return this.http.get('http://localhost:8080/images');
+        return this.http.get('/images');
     }
     getPhotosByCategory(categoryName) {
-        return this.http.get('http://localhost:8080/images/categories/' + categoryName);
+        return this.http.get('/images/categories/' + categoryName);
     }
     getCategories() {
-        return this.http.get('http://localhost:8080/categories');
+        return this.http.get('/categories');
     }
     getTagsWithParent() {
-        return this.http.get('http://localhost:8080/tags');
+        return this.http.get('/tags');
     }
     getTags() {
-        return this.http.get('http://localhost:8080/tags/allexisting');
+        return this.http.get('/tags/allexisting');
     }
     search(categories, tags, search) {
-        let query = 'http://localhost:8080/images/search?categories=';
+        let query = '/images/search?categories=';
         for (let string of categories) {
             query = query + string + ',';
         }

@@ -43,7 +43,6 @@ public class ImageController {
         return imageService.findAll();
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping()
     public Image image(@RequestBody Image image) throws IOException {
         return imageService.save(image);

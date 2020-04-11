@@ -611,7 +611,7 @@ var AuthService = /** @class */ (function () {
             var _this = this;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
                 return [2 /*return*/, this.http
-                        .post('http://localhost:8080/api/auth/signin', {
+                        .post('/api/auth/signin', {
                         usernameOrEmail: usernameOrEmail,
                         password: password
                     })
@@ -633,7 +633,7 @@ var AuthService = /** @class */ (function () {
                 name = user.name;
                 password = user.password;
                 return [2 /*return*/, this.http
-                        .post('http://localhost:8080/api/auth/signup', {
+                        .post('/api/auth/signup', {
                         email: email,
                         username: username,
                         name: name,
@@ -748,43 +748,42 @@ var GalleryService = /** @class */ (function () {
         this.http = http;
     }
     GalleryService.prototype.updateImage = function (image) {
-        this.http.put('http://localhost:8080/images/update', image).subscribe(function (data) {
+        this.http.put('/images/update', image).subscribe(function (data) {
             console.log('PUT Request was successful: ' + data);
         }, function (error) {
             console.log('error bois: ', error);
         });
     };
     GalleryService.prototype.addImage = function (image) {
-        return this.http.post('http://localhost:8080/images', image);
+        return this.http.post('/images', image);
     };
     GalleryService.prototype.deleteImage = function (imageId) {
-        console.log('http://localhost:8080/images/delete/' + imageId);
-        return this.http.delete('http://localhost:8080/images/delete/' + imageId);
+        return this.http.delete('/images/delete/' + imageId);
     };
     GalleryService.prototype.getPhoto = function (index) {
-        return this.http.get('http://localhost:8080/images/' + index);
+        return this.http.get('/images/' + index);
     };
     GalleryService.prototype.getFullPhoto = function (index) {
-        return this.http.get('http://localhost:8080/images/fullpicture?imageId=' + index);
+        return this.http.get('/images/fullpicture?imageId=' + index);
     };
     GalleryService.prototype.getThumbnails = function () {
-        return this.http.get('http://localhost:8080/images');
+        return this.http.get('/images');
     };
     GalleryService.prototype.getPhotosByCategory = function (categoryName) {
-        return this.http.get('http://localhost:8080/images/categories/' + categoryName);
+        return this.http.get('/images/categories/' + categoryName);
     };
     GalleryService.prototype.getCategories = function () {
-        return this.http.get('http://localhost:8080/categories');
+        return this.http.get('/categories');
     };
     GalleryService.prototype.getTagsWithParent = function () {
-        return this.http.get('http://localhost:8080/tags');
+        return this.http.get('/tags');
     };
     GalleryService.prototype.getTags = function () {
-        return this.http.get('http://localhost:8080/tags/allexisting');
+        return this.http.get('/tags/allexisting');
     };
     GalleryService.prototype.search = function (categories, tags, search) {
         var e_1, _a, e_2, _b;
-        var query = 'http://localhost:8080/images/search?categories=';
+        var query = '/images/search?categories=';
         try {
             for (var categories_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__values"](categories), categories_1_1 = categories_1.next(); !categories_1_1.done; categories_1_1 = categories_1.next()) {
                 var string = categories_1_1.value;
