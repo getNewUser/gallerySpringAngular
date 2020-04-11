@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
-@CrossOrigin(origins = "https://gallery-application.herokuapp.com/")
+@CrossOrigin(origins = "https://gallery-application.herokuapp.com")
 public class CategoryController {
 
     private CategoryService categoryService;

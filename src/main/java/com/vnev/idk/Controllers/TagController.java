@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tags")
-@CrossOrigin(origins = "https://gallery-application.herokuapp.com/")
+@CrossOrigin(origins = "https://gallery-application.herokuapp.com")
 public class TagController {
 
     private TagService tagService;

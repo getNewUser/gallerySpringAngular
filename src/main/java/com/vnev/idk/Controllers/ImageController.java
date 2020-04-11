@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/images")
-@CrossOrigin(origins = "https://gallery-application.herokuapp.com/")
+@CrossOrigin(origins = "https://gallery-application.herokuapp.com")
 public class ImageController {
 
 
