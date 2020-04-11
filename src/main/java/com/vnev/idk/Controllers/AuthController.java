@@ -27,7 +27,7 @@ import java.net.URI;
 import java.util.Collections;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://gallery-application.herokuapp.com/")
 @RequestMapping("/api/auth")
 public class AuthController {
 
